@@ -1,0 +1,35 @@
+import requests
+import zipfile
+import io
+from datetime import timedelta, date
+import matplotlib
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import pandas as pd
+import numpy as np
+
+url_dvf = (
+    "https://www.data.gouv.fr/fr/datasets/r/817204ac-2202-4b4a-98e7-4184d154d98c"
+)
+dvf= pd.read_csv(
+    url_dvf, sep="|"
+)
+dvf.head(5)
+
+nan_value = float("NaN")
+dvf.replace("", nan_value, inplace=True)
+  
+dvf.dropna(how='all', axis=1, inplace=True)
+dvf.head(5)
+
+dvf['Nature mutation'].value_counts().plot(kind='barh')
+plt.title('Number of appearances in dataset')
+plt.xlabel('Frequency')
+
+dvf['Code departement'].value_counts().plot(kind ='barh',figsize=(20, 20))
+plt.title('Number of appearances in dataset')
+plt.xlabel('Frequency')
+
+dvf['Type local'].value_counts().plot.pie(figsize=(10, 10))
+plt.title('Number of appearances in dataset')
+plt.xlabel('Frequency')
